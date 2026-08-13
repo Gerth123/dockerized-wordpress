@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  wordpress:
+    image: bitnami/wordpress:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DATABASE_HOST: ${WORDPRESS_DATABASE_HOST}
+      WORDPRESS_DATABASE_NAME: ${WORDPRESS_DATABASE_NAME}
+      WORDPRESS_DATABASE_USER: ${WORDPRESS_DATABASE_USER}
+      WORDPRESS_USERNAME: ${WORDPRESS_USERNAME}
+    volumes:
+      - wordpress_data:/bitnami/wordpress
+
+  db:
+    image: mariadb:10.6
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${WORDPRESS_DATABASE_NAME}
+      MARIADB_USER: ${WORDPRESS_DATABASE_USER}
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  wordpress_data:
+  db_data:
