@@ -91,3 +91,4 @@ Both services are configured with a `restart: unless-stopped` policy. If a conta
 
 - `docker-compose.yaml`: defines the `wordpress` and `db` services, their volumes, and environment configuration.
 - `.env.example`: a template showing which variables can be set in a local `.env` file, including which ones require credentials. Copy it to `.env` and adjust values there; `.env` itself is git-ignored.
+- `docs/Wordpress Checkliste.pdf`: the official project checklist provided by Developer Akademie, kept here for reference during development. It is not part of the application itself.
