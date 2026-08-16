@@ -21,7 +21,7 @@ A reproducible WordPress setup running alongside MariaDB, orchestrated through D
 Clone the repository and move into the project folder:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Gerth123/dockerized-wordpress.git
 cd dockerized-wordpress
 ```
 
