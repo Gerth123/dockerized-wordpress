@@ -1,4 +1,4 @@
-# Fabric Minecraft Server
+# Dockerized WordPress
 
 ## Table of Contents
 
