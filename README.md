@@ -49,8 +49,10 @@ The setup consists of two services defined in `docker-compose.yaml`:
 
 | Service | Image | Purpose |
 |---|---|---|
-| `wordpress` | `bitnami/wordpress:latest` | Serves the WordPress application on port `8080` |
+| `wordpress` | `wordpress:7.0-apache` | Serves the WordPress application on port `8080` |
 | `db` | `mariadb:10.6` | Stores WordPress content and configuration |
+
+Both services use the official Docker Hub images rather than the Bitnami images. Bitnami's versioned tags moved behind a paid subscription in September 2025, leaving only the `:latest` tag free. Relying on `:latest` in a Docker Compose setup means losing the ability to pin a specific version, which makes it impossible to guarantee that the same setup behaves identically across environments or after a rebuild. The official images keep every version freely available, so `wordpress:7.0-apache` here always resolves to the exact same image, regardless of when or where it is pulled.
 
 Both services are configured through variables listed in `.env.example`. Copy the template to `.env` before starting the setup:
 
@@ -62,22 +64,22 @@ Non critical values can be set according to your needs:
 
 | Variable | Description |
 |---|---|
-| `WORDPRESS_DATABASE_HOST` | Hostname of the database service |
-| `WORDPRESS_DATABASE_NAME` | Name of the WordPress database |
-| `WORDPRESS_DATABASE_USER` | Database username |
-| `WORDPRESS_USERNAME` | WordPress admin username |
+| `WORDPRESS_DB_HOST` | Hostname of the database service |
+| `WORDPRESS_DB_NAME` | Name of the WordPress database |
+| `WORDPRESS_DB_USER` | Database username |
 
 Credential values must also be set, but **must not be committed to the repository**. They only exist in your local, git-ignored `.env` file:
 
 | Variable | Description |
 |---|---|
-| `WORDPRESS_DATABASE_PASSWORD` | Password for the database user |
-| `WORDPRESS_PASSWORD` | Password for the WordPress admin user |
+| `WORDPRESS_DB_PASSWORD` | Password for the database user |
 | `MARIADB_ROOT_PASSWORD` | Root password for the MariaDB instance |
 
 Docker Compose automatically picks up values from `.env` and uses them in place of the placeholders in `docker-compose.yaml`, without you needing to touch the tracked file.
 
 WordPress is reachable on port `8080` of the host. To use a different port, adjust the port mapping for the `wordpress` service in `docker-compose.yaml`.
+
+Unlike the Bitnami image, the official WordPress image does not create an admin account through environment variables. On first visiting `http://<your-vm-ip>:8080`, WordPress runs its own five minute setup wizard, where you choose the site title and set the admin username and password directly in the browser. This keeps the image close to the upstream WordPress distribution, without additional automation scripts layered on top.
 
 The site files and the database are stored in the named Docker volumes `wordpress_data` and `db_data`. This means content, plugins, and database entries survive container restarts and rebuilds. To reset the installation entirely, remove the volumes before starting again:
 
