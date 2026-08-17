@@ -1,28 +1,26 @@
 services:
   wordpress:
-    image: bitnami/wordpress:latest
+    image: wordpress:7.0-apache
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8080:80"
     depends_on:
       - db
     environment:
-      WORDPRESS_DATABASE_HOST: ${WORDPRESS_DATABASE_HOST}
-      WORDPRESS_DATABASE_NAME: ${WORDPRESS_DATABASE_NAME}
-      WORDPRESS_DATABASE_USER: ${WORDPRESS_DATABASE_USER}
-      WORDPRESS_DATABASE_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD}
-      WORDPRESS_USERNAME: ${WORDPRESS_USERNAME}
-      WORDPRESS_PASSWORD: ${WORDPRESS_PASSWORD}
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     volumes:
-      - wordpress_data:/bitnami/wordpress
+      - wordpress_data:/var/www/html
 
   db:
     image: mariadb:10.6
     restart: unless-stopped
     environment:
-      MARIADB_DATABASE: ${WORDPRESS_DATABASE_NAME}
-      MARIADB_USER: ${WORDPRESS_DATABASE_USER}
-      MARIADB_PASSWORD: ${WORDPRESS_DATABASE_PASSWORD}
+      MARIADB_DATABASE: ${WORDPRESS_DB_NAME}
+      MARIADB_USER: ${WORDPRESS_DB_USER}
+      MARIADB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
