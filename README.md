@@ -5,7 +5,6 @@ A reproducible WordPress setup running alongside MariaDB, orchestrated through D
 ## Table of Contents
 
 - [Quickstart](#quickstart)
-- [Project Goal](#project-goal)
 - [Usage](#usage)
 - [Additional Files](#additional-files)
 
@@ -21,11 +20,11 @@ A reproducible WordPress setup running alongside MariaDB, orchestrated through D
 Clone the repository and move into the project folder:
 
 ```bash
-git clone https://github.com/Gerth123/dockerized-wordpress.git
+git clone git@github.com:Gerth123/dockerized-wordpress.git
 cd dockerized-wordpress
 ```
 
-Copy the environment template and fill in the required values, including the database and admin passwords:
+Copy the environment template and fill in the required values, including the database and root passwords:
 
 ```bash
 cp .env.example .env
@@ -37,11 +36,7 @@ Start the setup:
 docker compose up -d
 ```
 
-Once it's running, open `http://<your-vm-ip>:8080` in your browser and log in with the admin credentials configured in `.env`.
-
-## Project Goal
-
-This repository provides a Dockerized WordPress setup running alongside a MariaDB database, orchestrated through Docker Compose. The `docker-compose.yaml` runs two services, `wordpress` and `db`, exposes WordPress on port 8080, and persists both the site files and the database in Docker volumes so nothing is lost on restart. Configuration happens entirely through environment variables, keeping credentials and other sensitive values out of the codebase.
+Open `http://<your-vm-ip>:8080` in your browser and complete the WordPress setup wizard to create your admin account.
 
 ## Usage
 
