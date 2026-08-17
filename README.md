@@ -49,6 +49,16 @@ The setup consists of two services defined in `docker-compose.yaml`:
 
 Both services use the official Docker Hub images rather than the Bitnami images. Bitnami's versioned tags moved behind a paid subscription in September 2025, leaving only the `:latest` tag free. Relying on `:latest` in a Docker Compose setup means losing the ability to pin a specific version, which makes it impossible to guarantee that the same setup behaves identically across environments or after a rebuild. The official images keep every version freely available, so `wordpress:7.0-apache` here always resolves to the exact same image, regardless of when or where it is pulled.
 
+A few other decisions behind this setup:
+
+**Why official images.** Docker Official Images are reviewed and maintained as part of Docker's official program, not by a random third party. That means the build process and how quickly security fixes get applied are traceable, which is not something you can rely on with every community image.
+
+**Why `wordpress:7.0-apache` instead of a more exact version.** This tag pins the WordPress version to 7.0.x, but not to one exact patch release like 7.0.4. That is a trade off: pinning the exact patch version is more predictable, but means manually updating the tag every time a security patch comes out. Pinning only the minor version still protects against unexpected major changes, while still picking up patch level security fixes when the image is rebuilt.
+
+**Why the Apache variant.** The `-apache` image bundles PHP and the web server together, so the whole app only needs one container. An alternative would be to split PHP (via FPM) and the web server into two separate containers. That is a cleaner separation of concerns, but adds complexity that was not needed for this project.
+
+**Why credentials only live in `.env`.** All passwords are only ever passed in through environment variables from a local, git ignored `.env` file. Neither `docker-compose.yaml` nor `.env.example` ever contain an actual password, only a reference to where the value comes from.
+
 Both services are configured through variables listed in `.env.example`. Copy the template to `.env` before starting the setup:
 
 ```bash
